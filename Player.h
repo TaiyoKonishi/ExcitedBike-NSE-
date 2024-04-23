@@ -1,48 +1,54 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SFML/Graphics.hpp> // Assuming use of SFML for graphics and vector math.
+#include <SFML/Graphics.hpp> 
 
-// The Player class represents the player's character in the game.
-// It includes properties such as position, speed, and includes behaviors like moving.
+// The Player class represents the player character in the game.
 class Player {
 public:
     Player();
     ~Player();
 
-    // Initializes the player, setting up initial position and state.
-    // This function might be called from GameEngine when a new game starts or a new level is loaded.
+    // Initializes the player. Sets up initial position and state.
     void Initialize();
 
-    // Updates the player's state, including position based on current speed and input.
-    // This should be called from GameEngine's update loop, passing the time since the last frame (deltaTime).
+    // Updates the player's state, including movement and speed changes.
     void Update(float deltaTime);
 
     // Renders the player on the screen.
-    // This function should be called from GameEngine's render loop, passing a reference to the rendering context.
     void Render(sf::RenderWindow& window);
 
-    // Processes player input to change the player's speed or perform actions like jumping.
-    // This should be called from GameEngine's input processing function, likely with input data as arguments.
+    // Processes player input. Executes actions like jumping and changing speed.
     void ProcessInput(const sf::Event& event);
 
-    // Getter and setter methods for player properties like position and speed.
+    // Methods to get and set the position.
     sf::Vector2f GetPosition() const;
     void SetPosition(const sf::Vector2f& position);
 
+    // Methods to get and set the speed.
     float GetSpeed() const;
     void SetSpeed(float speed);
 
-    // Additional behaviors like acceleration, braking, and jumping can be added here.
+    // Getter and setter for the velocity property. Used for velocity calculations by the physics engine.
+    sf::Vector2f GetVelocity() const;
+    void SetVelocity(const sf::Vector2f& velocity);
 
 private:
-    sf::Vector2f position; // Holds the player's position on the screen.
-    float speed; // The current speed of the player.
-    // Additional properties like acceleration and health could be included here.
+    sf::Vector2f position; // The player's position on the screen.
+    float speed; // The player's speed.
+    sf::Vector2f velocity; // The player's velocity vector.
 
-    // You might also want to include a reference or pointer back to the GameEngine if the player needs to directly interact with it,
-    // for example, to check game state or access global game properties.
-    // However, care must be taken to manage this relationship to avoid circular dependencies or memory issues.
 };
 
+sf::Vector2f Player::GetVelocity() const {
+    // Returns the current velocity vector.
+    return velocity;
+}
+
+void Player::SetVelocity(const sf::Vector2f& velocity) {
+    // Sets the velocity vector.
+    this->velocity = velocity;
+}
+
 #endif // PLAYER_H
+
